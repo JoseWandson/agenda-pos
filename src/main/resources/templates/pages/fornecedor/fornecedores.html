@@ -1,0 +1,107 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layoutPadrao}">
+
+<section layout:fragment="conteudo">
+
+	<div id="page-wrapper">
+		<div class="row top-header">
+			<div class="col-lg-12">
+				<h2 class="page-header">Fornecedores</h2>
+			</div>
+		</div>
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+			<li class="breadcrumb-item active">Fornecedor</li>
+
+		</ol>
+
+		<div class="alert alert-success"
+			th:if="${not #strings.isEmpty(mensagem)}">
+			<button type="button" class="close" data-dismiss="alert">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<span th:text="${mensagem}"></span>
+		</div>
+
+		<div class="alert alert-success"
+			th:if="${not #strings.isEmpty(removido)}">
+			<button type="button" class="close" data-dismiss="alert">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<span th:text="${removido}"></span>
+		</div>
+
+		<div class="alert alert-success"
+			th:if="${not #strings.isEmpty(ativadoDesativado)}">
+			<button type="button" class="close" data-dismiss="alert">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<span th:text="${ativadoDesativado}"></span>
+		</div>
+
+		<div class="conteiner">
+
+			<form method="GET" class="form-horizontal" action="/fornecedor"
+				th:object="${filtro}">
+				<div class="form-group">
+					<div class="col-sm-4">
+						<div class="input-group">
+							<input class="form-control"
+								placeholder="Qual fornecedor você está procurando?"
+								autofocus="autofocus" th:field="*{nome}"></input> <span
+								class="input-group-btn">
+								<button type="submit" class="btn btn-default">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<br />
+
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>Razão Social</th>
+						<th>CNPJ</th>
+						<th>E-mail</th>
+						<th>Status</th>
+						<th class="th-acoes">Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="f: ${fornecedores}">
+						<td th:text="${f.nome}"></td>
+						<td th:text="${f.razaoSocial}"></td>
+						<td th:text="${f.cnpj}"></td>
+						<td th:text="${f.email}"></td>
+						<td th:text="(${f.ativo} ? 'Ativo' : 'Inativo')"></td>
+						<td>
+							<a th:href="@{fornecedores/edit/{id}(id=${f.id})}" type="button"
+								class="btn btn-outline btn-primary">
+								Editar
+							</a>
+							<a th:href="@{fornecedores/delete/{id}(id=${f.id})}" type="button"
+								class="btn btn-outline btn-danger">
+								Excluir
+							</a>
+							<a th:href="@{fornecedores/ativar/{id}(id=${f.id})}"
+								type="button" class="btn btn-outline btn-warning"
+								th:text="${f.ativo} ? 'Desativar' : 'Ativar'" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<a th:href="@{/fornecedores/novo}" type="button"
+				class="btn btn-outline btn-primary">Novo Fornecedor</a>
+		</div>
+
+	</div>
+</section>
+</html>
